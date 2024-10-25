@@ -1,7 +1,6 @@
 from database import conexiondb
 from mysql.connector import Error
 
-
 class Producto:
     def _init_(self) -> None:
         pass
@@ -32,7 +31,7 @@ class Producto:
 
     def agregarProducto(self):
         query = "INSERT INTO producto(nombre, descripcion, imagen, idcategoria, cantidad, preciocompra, precioventa, fechacreacion, idproveedor)\
-        values(%s,%s,%s,%s,%s,%s,%s,%s, %s);"
+        values(%s,%s,%s,%s,%s,%s,%s,%s,%s);"
         conn = conexiondb.conexion
         data = (
             self.nombre,
@@ -80,7 +79,6 @@ class Producto:
     def eliminarProducto(self, idpro):
         query = "delete from producto where idproducto =" + str(idpro)
         conn = conexiondb.conexion
-        data = idpro
         try:
             cursor = conn.cursor()
             cursor.execute(
@@ -97,7 +95,7 @@ class Producto:
             conn = conexiondb.conexion
             cursor = conn.cursor()
 
-            query = "select idproducto, nombre, descripcion, imagen, idcategoria, cantidad, preciocompra, precioventa,idproveedor fechacreacion from producto;"
+            query = "select idproducto, nombre, descripcion, imagen, idcategoria, cantidad, preciocompra, precioventa, fechacreacion, idproveedor from producto;"
             cursor.execute(query)
             ver = cursor.fetchall()
             dicti = []
@@ -161,6 +159,31 @@ class Producto:
                 dicti.append(row)
 
             return dicti
+
+        except Exception as e:
+            print(f"Ocurrió un error: {e}")
+            return 0
+
+    def buscarProducto(self, id):
+        try:
+            conn = conexiondb.conexion
+            cursor = conn.cursor()
+
+            query = (
+                "select idproducto, nombre, descripcion, imagen,  cantidad,  precioventa  from producto where idproducto = "
+                + str(id)
+            )
+            cursor.execute(query)
+            ver = cursor.fetchone()
+            row = {}
+            row["id"] = ver[0]
+            row["nombre"] = ver[1]
+            row["descripcion"] = ver[2]
+            row["imagen"] = ver[3]
+            row["cantidad"] = ver[4]
+            row["precio"] = ver[5]
+
+            return row
 
         except Exception as e:
             print(f"Ocurrió un error: {e}")

@@ -74,7 +74,13 @@ class Usuario:
             if check_pass:
                 # retorno = HTTP_201_CREATED
                 retorno = self.construirMenu(
-                    usuario[8], usuario[0], usuario[1], usuario[2], usuario[3]
+                    usuario[8],
+                    usuario[0],
+                    usuario[1],
+                    usuario[2],
+                    usuario[3],
+                    usuario[5],
+                    usuario[6],
                 )
             else:
                 retorno = HTTP_400_BAD_REQUEST
@@ -82,7 +88,7 @@ class Usuario:
             retorno = HTTP_400_BAD_REQUEST
         return retorno
 
-    def construirMenu(self, role, id, nombres, apellidos, correo):
+    def construirMenu(self, role, id, nombres, apellidos, correo, nit, direccion):
 
         conn = conexiondb.conexion
         cursor = conn.cursor()
@@ -125,4 +131,6 @@ class Usuario:
         dictPerfil["fecha"] = ""
         dictPerfil["idrol"] = 0
         dictPerfil["menu"] = item
+        dictPerfil["nit"] = nit
+        dictPerfil["direccion"] = direccion
         return dictPerfil
